@@ -1,0 +1,22 @@
+#ci.gocd.yaml
+pipelines:
+  test-framework-pip:
+    group: test_framework
+    label_template: "d${COUNT}-g${src[:7]}"
+    materials:
+      src:
+        git: https://github.com/466300750/test_framework.git
+        branch: 'master'
+        shallow_clone: true
+    stages:
+      - test: # name of stage
+          jobs:
+            unit_test: # name of the job
+              artifacts:
+                - test:
+                    source: target/jmeter/results
+                    destination: test
+              tasks:
+                - exec:
+                    command: mvn verify
+
